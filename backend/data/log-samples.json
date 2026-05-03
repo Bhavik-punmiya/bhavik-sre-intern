@@ -1,0 +1,25 @@
+{
+  "MCP": [
+    { "msg": "MCP_PROCESSOR_INIT: Initializing worker node 04-B", "severity": "P3" },
+    { "msg": "ERR_PAYLOAD_MISMATCH: Incoming signal schema does not match registry v2.1. Expected {user_id}, got {uid}.", "severity": "P1" },
+    { "msg": "MCP_BUFFER_FULL: Backpressure applied. Dropping 12% of non-critical signals.", "severity": "P2" },
+    { "msg": "TIMEOUT: Failed to acknowledge signal within 500ms. Retrying attempt 3/5...", "severity": "P1" }
+  ],
+  "RDBMS": [
+    { "msg": "SQL_ERROR: Deadlock detected while executing UPDATE on table 'work_items'. Transaction rolled back.", "severity": "P0" },
+    { "msg": "DB_CONNECTION_POOL_EXHAUSTED: Max connections (100) reached. Queueing requests.", "severity": "P1" },
+    { "msg": "SLOW_QUERY: SELECT * FROM signals WHERE incident_id = ? took 1450ms. Index optimization recommended.", "severity": "P2" },
+    { "msg": "MIGRATION_COMPLETED: Applied schema change v2.4.1 (add_rca_index).", "severity": "P3" }
+  ],
+  "CACHE": [
+    { "msg": "REDIS_EVICTION: Maxmemory reached. Evicting 45 keys using volatile-lru policy.", "severity": "P2" },
+    { "msg": "CACHE_MISS: Key 'incident_cache_99' not found. Fetching from Postgres.", "severity": "P3" },
+    { "msg": "ERR_REDIS_CONNECTION: Timeout connecting to sentinel-01.local:6379.", "severity": "P0" },
+    { "msg": "READ_REPLICA_LAG: Replica-02 is 450ms behind primary. Read consistency may be affected.", "severity": "P1" }
+  ],
+  "API": [
+    { "msg": "REQ_START: POST /api/v1/signals - UserAgent: AWS-Internal-Probe", "severity": "P3" },
+    { "msg": "ERR_AUTH_FAILURE: Invalid X-API-Key provided for client 'ext-monitoring-09'.", "severity": "P1" },
+    { "msg": "REPORT: Duration: 41.50 ms | Billed Duration: 42 ms | Memory Size: 1024 MB | Max Memory Used: 263 MB", "severity": "P3" }
+  ]
+}

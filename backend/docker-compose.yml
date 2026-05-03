@@ -1,0 +1,132 @@
+services:
+  ingester:
+    build:
+      context: ./ingester
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./ingester:/app
+      - ./shared:/app/shared
+      - /app/node_modules
+    environment:
+      - VALID_API_KEYS=key1,key2,key3,mock-gen-key-001
+      - PORT=8001
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8001/health').then(r => r.ok ? process.exit(0) : process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - redis
+    restart: always
+
+  mock-generator:
+    build:
+      context: ./mock-generator
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./mock-generator:/app
+      - /app/node_modules
+    environment:
+      - INGESTER_URL=http://ingester:8001
+      - PORT=8003
+    depends_on:
+      ingester:
+        condition: service_healthy
+    restart: always
+
+  workflow-engine:
+    build:
+      context: ./workflow-engine
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./workflow-engine:/app
+      - ./shared:/app/shared
+      - /app/node_modules
+    environment:
+      - PORT=8002
+      - MONGO_URI=mongodb://mongodb:27017/ims
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - TIMESCALE_HOST=timescaledb
+      - TIMESCALE_PORT=5432
+      - ALERT_SERVICE_URL=http://alert-service:8004
+      - ALERT_SERVICE_KEY=alert-svc-key-005
+      - WORKFLOW_API_KEY=workflow-key-002
+    depends_on:
+      - mongodb
+      - postgres
+      - timescaledb
+      - redis
+    restart: always
+
+  alert-service:
+    build:
+      context: ./alert-service
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./alert-service:/app
+      - /app/node_modules
+    environment:
+      - PORT=8004
+      - MONGO_URI=mongodb://mongodb:27017/ims
+      - POSTGRES_HOST=postgres
+      - ALERT_SERVICE_KEY=alert-svc-key-005
+      - SMTP_HOST=smtp.ethereal.email
+      - SMTP_PORT=587
+    depends_on:
+      - mongodb
+      - postgres
+    restart: always
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=ims
+    volumes:
+      - mongo_data:/data/db
+
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ims
+      - POSTGRES_USER=ims_user
+      - POSTGRES_PASSWORD=ims_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=ims_metrics
+      - POSTGRES_USER=ims_user
+      - POSTGRES_PASSWORD=ims_password
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+      - ./init-timescale.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:
+  postgres_data:
+  timescale_data:

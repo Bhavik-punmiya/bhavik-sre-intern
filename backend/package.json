@@ -1,0 +1,16 @@
+{
+  "name": "incident-management-system",
+  "version": "1.0.0",
+  "description": "Root package to manage microservices",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix ingester && npm install --prefix mock-generator && npm install --prefix workflow-engine && npm install --prefix alert-service",
+    "test": "node --test workflow-engine/src/tests/rca.test.js",
+    "simulate": "node ../scripts/simulate-outage.js",
+    "dev:ingester": "npm run dev --prefix ingester",
+    "dev:mock": "npm run dev --prefix mock-generator",
+    "dev:workflow": "npm run dev --prefix workflow-engine",
+    "dev:alert": "npm run dev --prefix alert-service",
+    "dev": "npx concurrently \"npm run dev:ingester\" \"npm run dev:mock\" \"npm run dev:workflow\" \"npm run dev:alert\""
+  }
+}

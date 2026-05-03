@@ -1,0 +1,23 @@
+{
+  "name": "workflow-engine",
+  "version": "1.0.0",
+  "description": "Signal Processing Workflow Engine",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test src/tests/*.test.js",
+    "dev": "node --watch src/server.js",
+    "worker": "node src/worker.js"
+  },
+  "dependencies": {
+    "bullmq": "^5.4.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "incident-management-system": "file:..",
+    "ioredis": "^5.3.2",
+    "mongoose": "^8.2.1",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1"
+  }
+}

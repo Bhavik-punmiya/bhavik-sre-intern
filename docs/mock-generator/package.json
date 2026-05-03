@@ -1,0 +1,17 @@
+{
+  "name": "mock-generator",
+  "version": "1.0.0",
+  "description": "Signal Mock Generator Service",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "incident-management-system": "file:.."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "alert-service",
+  "version": "1.0.0",
+  "description": "Notification and Alert Routing Service",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "incident-management-system": "file:..",
+    "mongoose": "^8.2.1",
+    "nodemailer": "^6.9.10",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1"
+  }
+}

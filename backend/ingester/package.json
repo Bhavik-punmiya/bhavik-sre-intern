@@ -1,0 +1,21 @@
+{
+  "name": "ingester",
+  "version": "1.0.0",
+  "description": "Signal Ingester Service",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/helmet": "^11.1.1",
+    "@fastify/rate-limit": "^9.1.0",
+    "bullmq": "^5.4.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "incident-management-system": "file:..",
+    "ioredis": "^5.3.2"
+  }
+}
